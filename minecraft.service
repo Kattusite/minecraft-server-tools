@@ -1,6 +1,6 @@
 # minecraft.service
 
-[Unit] 
+[Unit]
 Description=Minecraft Server
 
 [Service]

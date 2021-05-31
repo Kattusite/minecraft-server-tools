@@ -81,7 +81,7 @@ function server_running() {
 		ps -p $(cat $PIDFILE) > /dev/null
 		return
 	fi
-	
+
 	false
 }
 
@@ -119,7 +119,7 @@ function server_backup_safe() {
 	send_cmd "save-off"
 	send_cmd "save-all flush"
 	echo "Waiting for save... If froze, run /save-on to re-enable autosave!!"
-	
+
 	sleep 1
 	while [ $(tail -n 3 "$LOGFILE" | grep -c "Saved the game") -lt 1 ]
 	do
@@ -133,7 +133,7 @@ function server_backup_safe() {
 	else
 		create_backup_archive
 	fi
-	
+
 	local RET=$?
 
 	echo "Re-enabling auto-save"
@@ -221,9 +221,9 @@ function server_backup() {
         fi
 	fi
 
-	if server_running; then 
+	if server_running; then
 		server_backup_safe "$force"
-	else 
+	else
 		server_backup_unsafe
 	fi
 
