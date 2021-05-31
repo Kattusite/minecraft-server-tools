@@ -19,7 +19,7 @@ function send_cmd () {
 function assert_running() {
 	if server_running; then
 		echo "It seems a server is already running. If this is not the case,\
-			manually attach to the running screen and close it."
+			manually attach to the running tmux session and close it."
 		exit 1
 	fi
 }

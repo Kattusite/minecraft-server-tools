@@ -15,7 +15,7 @@ WORLD_NAME="lfja"
 
 BACKUP_NAME="${WORLD_NAME}_backup"
 LOGFILE="logs/latest.log"
-PIDFILE="server-screen.pid"
+PIDFILE="server-tmux.pid"
 USE_BUP="NO"
 
 #Constants

@@ -12,7 +12,7 @@ Config-variables are located at the top of `server.sh`
 
 ### start
 
-Creates a `screen` session and starts a minecraft server within.
+Creates a `tmux` session and starts a minecraft server within.
 Fails, if a session is already running with the same sessionname.
 
 ### stop
@@ -21,11 +21,11 @@ Sends `stop` command to running server instance to safely shut down.
 
 ### attach
 
-attaches to `screen` session. Exit with `CTRL + A d`
+attaches to `tmux` session. Exit with `CTRL + B d`
 
 ### status
 
-lists active screen sessions with `SCREEN_SESSIONNAME`.
+lists active `tmux` sessions with `TMUX_WINDOW`.
 
 ### backup
 
