@@ -260,6 +260,6 @@ case $1 in
 		ls_bup $2
 		;;
 	*)
-		echo "Usage: $0 start|stop|attach|status|backup"
+		echo "Usage: $0 start|stop|attach|status|backup|fbackup|ls"
 		;;
 esac
