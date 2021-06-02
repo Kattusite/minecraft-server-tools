@@ -8,9 +8,14 @@ else
 	exit 1
 fi
 
-function backup_hook_example {
-	bup -d $CUR_BACK_DIR ls -l $BACKUP_NAME/latest/var/minecraft
-}
+# import backup helpers for the active backend, including:
+#   - init_backups
+#   - create_backup
+#   - pre_backup_hook
+#   - post_backup_hook
+#   - ls_backups
+#   - restore_backup
+source backup-scripts/$BACKUP_BACKEND-backup.sh
 
 function send_cmd () {
 	tmux -S $TMUX_SOCKET send -t $TMUX_WINDOW "$1" enter
@@ -128,74 +133,19 @@ function server_backup_safe() {
 	sleep 2
 	echo "Done! starting backup..."
 
-	if [ $USE_BUP = "YES" ]; then
-		create_bup_backup
-	else
-		create_backup_archive
-	fi
+	create_backup
 
 	local RET=$?
 
 	echo "Re-enabling auto-save"
 	send_cmd "save-on"
 
-	if [ $RET -eq 0 ]
-	then
-		echo Running backup hook
-		$BACKUP_HOOK
-	fi
+	return $RET
 }
 
 function server_backup_unsafe() {
 	echo "No running server detected. Running Backup"
-
-	if [ $USE_BUP = "YES" ]; then
-		create_bup_backup
-	else
-		create_backup_archive
-	fi
-
-	if [ $? -eq 0 ]
-	then
-		echo Running backup hook
-		$BACKUP_HOOK
-	fi
-}
-
-function create_bup_backup() {
-	BACKUP_DIR="mc-backups"
-	CUR_BACK_DIR="mc-backups/$CUR_YEAR"
-
-	if [ ! -d "$CUR_BACK_DIR" ]; then
-	mkdir -p "$CUR_BACK_DIR"
-	fi
-
-
-	bup -d "$CUR_BACK_DIR" index "$WORLD_NAME"
-	status=$?
-	if [ $status -eq 1 ]; then
-	bup -d "$CUR_BACK_DIR" init
-	bup -d "$CUR_BACK_DIR" index "$WORLD_NAME"
-	fi
-
-	bup -d "$CUR_BACK_DIR" save -n "$BACKUP_NAME" "$WORLD_NAME"
-
-	echo "Backup using bup to $CUR_BACK_DIR is complete"
-}
-
-# TODO: Make default .tar with optional bup
-function create_backup_archive() {
-	ARCHNAME="backup/$WORLD_NAME-backup_`date +%d-%m-%y-%T`.tar.gz"
-	tar -czf "$ARCHNAME" "./$WORLD_NAME"
-
-	if [ ! $? -eq 0 ]
-	then
-		echo "TAR failed. No Backup created."
-		rm $ARCHNAME #remove (probably faulty) archive
-		return 1
-	else
-		echo $ARCHNAME created.
-	fi
+	create_backup
 }
 
 function backup_running() {
@@ -214,12 +164,15 @@ function server_backup() {
             echo "A backup is running. Aborting..."
             return
         fi
-    else
+  else
         if fbackup_running; then
             echo "A force backup is running. Aborting..."
             return
         fi
 	fi
+
+	echo "Running pre-backup hook"
+	pre_backup_hook
 
 	if server_running; then
 		server_backup_safe "$force"
@@ -227,11 +180,17 @@ function server_backup() {
 		server_backup_unsafe
 	fi
 
+	if [ $? -eq 0 ]; then
+		echo "Running post-backup hook"
+		post_backup_hook
+	fi
+
 	exit
 }
 
-function ls_bup() {
-	bup -d "mc-backups/${CUR_YEAR}" ls "mc-sad-squad/$1"
+function server_restore() {
+	assert_not_running
+	restore_backup $1
 }
 
 #cd $(dirname $0)
@@ -249,7 +208,9 @@ case $1 in
 	"backup")
 		server_backup
 		;;
-	# TODO: Add restore command
+	"restore")
+		server_restore $2
+		;;
 	"status")
 		server_status
 		;;
@@ -257,7 +218,7 @@ case $1 in
 		server_backup "true"
 		;;
 	"ls")
-		ls_bup $2
+		ls_backups $2
 		;;
 	*)
 		echo "Usage: $0 start|stop|attach|status|backup|fbackup|ls"
