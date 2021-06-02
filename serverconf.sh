@@ -8,6 +8,7 @@ JVM_ARGS="-Xms4096M -Xmx6144M"
 JAR="fabric-server-launch.jar"
 JAR_ARGS="-nogui"
 
+SERVER_DIR=$PWD             # Path to the server directory
 WORLD_NAME="world"          # Name of the active world directory ("level-name")
 LOGFILE="logs/latest.log"   # Where is the latest.log file located?
 

@@ -36,6 +36,33 @@ function assert_running() {
 	fi
 }
 
+function server_init() {
+	$INSTALL_PKG default-jdk-headless
+	if [ ! -f $JAR ]; then
+		echo "Error: place $JAR in this script's directory and try again."
+		return
+	fi
+
+	# The default services assume a server dir of /var/minecraft.
+	# Update it.
+	for svc in `ls services/*.service`; do
+		sed -i "s|/var/minecraft|$SERVER_DIR|" "$svc"
+	done
+
+	# Symlink services into appropriate system dirs
+	for svc in `ls services`; do
+		sudo ln -s $PWD/services/$svc /etc/systemd/system/$svc
+	done
+
+	# Enable auto-start for the various services
+	# (But don't start them yet!)
+	for svc in minecraft mc-backup.timer daily-mc-backup.timer; do
+		sudo systemctl enable "$svc"
+	done
+
+	init_backups
+}
+
 function server_start() {
 	assert_not_running
 
@@ -196,6 +223,9 @@ function server_restore() {
 #cd $(dirname $0)
 
 case $1 in
+	"init")
+		server_init
+		;;
 	"start")
 		server_start
 		;;
