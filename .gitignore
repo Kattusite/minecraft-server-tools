@@ -1,0 +1,10 @@
+# Ignore everything in the root, as it will have Minecraft server files
+/*
+
+# Un-ignore the files from this repo
+!/services
+!/backup-scripts
+!.gitignore
+!Readme.md
+!server.sh
+!serverconf.sh
