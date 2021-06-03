@@ -36,13 +36,7 @@ function assert_running() {
 	fi
 }
 
-function server_init() {
-	$INSTALL_PKG default-jdk-headless
-	if [ ! -f $JAR ]; then
-		echo "Error: place $JAR in this script's directory and try again."
-		return
-	fi
-
+function init_services() {
 	# The default services assume a server dir of /var/minecraft.
 	# Update it.
 	for svc in `ls services/*.service`; do
@@ -59,7 +53,20 @@ function server_init() {
 	for svc in minecraft mc-backup.timer daily-mc-backup.timer; do
 		sudo systemctl enable "$svc"
 	done
+}
 
+function server_init() {
+	$INSTALL_PKG $JAVA_PKG
+	if [ ! -f $JAR ]; then
+		if [ -z "$JAR_URL" ]; then
+			echo "Error: place $JAR in this script's directory and try again."
+			return
+		else
+			wget $JAR_URL -O $JAR
+		fi
+	fi
+
+	init_services
 	init_backups
 }
 

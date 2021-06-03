@@ -2,12 +2,21 @@
 # configuration file for server.sh minecraft server
 # management script
 
-# SERVER
+# JAR auto-download settings
+MC_VERSION='1.16.5'
+
+# If JAR_URL is provided, automatically download a .jar from that URL
+# when no $JAR file exists. If left blank, disable automatic downloads.
+JAR_URL="https://papermc.io/api/v1/paper/$MC_VERSION/latest/download"
+JAR="paper-$MC_VERSION.jar"
+
+# JAVA SETTINGS
+JAVA_PKG="openjdk-16-jdk-headless"
 JRE_JAVA="java"
 JVM_ARGS="-Xms4096M -Xmx6144M"
-JAR="fabric-server-launch.jar"
 JAR_ARGS="-nogui"
 
+# SERVER FILES
 SERVER_DIR=$PWD             # Path to the server directory
 WORLD_NAME="world"          # Name of the active world directory ("level-name")
 LOGFILE="logs/latest.log"   # Where is the latest.log file located?
