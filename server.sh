@@ -15,7 +15,7 @@ fi
 #   - post_backup_hook
 #   - ls_backups
 #   - restore_backup
-source backup-scripts/$BACKUP_BACKEND-backup.sh
+source $BACKUP_SCRIPTS_DIR/$BACKUP_BACKEND-backup.sh
 
 function send_cmd () {
 	tmux -S $TMUX_SOCKET send -t $TMUX_WINDOW "$1" enter
@@ -63,13 +63,13 @@ function init_bashrc() {
 function init_services() {
 	# The default services assume a server dir of /var/minecraft.
 	# Update it.
-	for svc in `ls services/*.service`; do
+	for svc in `ls $SERVICES_DIR/*.service`; do
 		sed -i "s|/var/minecraft|$SERVER_DIR|" "$svc"
 	done
 
 	# Symlink services into appropriate system dirs
-	for svc in `ls services`; do
-		sudo ln -s $PWD/services/$svc /etc/systemd/system/$svc
+	for svc in `ls $SERVICES_DIR`; do
+		sudo ln -s $SERVICES_DIR/$svc /etc/systemd/system/$svc
 	done
 
 	# Enable auto-start for the various services

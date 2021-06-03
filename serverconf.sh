@@ -2,6 +2,10 @@
 # configuration file for server.sh minecraft server
 # management script
 
+# SCRIPT SETTINGS
+BACKUP_SCRIPTS_DIR=$PWD/.backup-scripts    # Path to dir containing backup scripts
+SERVICES_DIR=$PWD/.services                # Path to dir containing service files
+
 # JAR auto-download settings
 MC_VERSION='1.16.5'
 

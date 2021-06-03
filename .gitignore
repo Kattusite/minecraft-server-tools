@@ -2,8 +2,8 @@
 /*
 
 # Un-ignore the files from this repo
-!/services
-!/backup-scripts
+!/.services
+!/.backup-scripts
 !.gitignore
 !Readme.md
 !server.sh
