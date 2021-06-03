@@ -36,22 +36,22 @@ LOGFILE="logs/latest.log"   # Where is the latest.log file located?
 INSTALL_PKG="sudo apt install -y"
 
 # TMUX
-TMUX_WINDOW="minecraft"
-TMUX_SOCKET="mc_tmux_socket"
-PIDFILE="server-tmux.pid"
+TMUX_WINDOW="minecraft"             # Title of minecraft tmux session
+TMUX_SOCKET="$PWD/.mc_tmux_socket"  # Socket file to be used by tmux
+PIDFILE="server-tmux.pid"           # File storing PID of tmux session
 
 # BACKUPS
-BACKUP_BACKEND="borg"             # Choices: borg|bup|tar|no
-BACKUP_DIR="backups"              # Where backups will be stored
-WORLD_BACKUP_NAME="$WORLD_NAME"   # Prepended to names of world backups
-CONFIG_BACKUP_NAME="_config"      # Prepended to names of config backups.
+BACKUP_BACKEND="borg"               # Choices: borg|bup|tar|no
+BACKUP_DIR="backups"                # Where backups will be stored
+WORLD_BACKUP_NAME="$WORLD_NAME"     # Prepended to names of world backups
+CONFIG_BACKUP_NAME="_config"        # Prepended to names of config backups.
 
 # Which config files should be backed up?
 CONFIG_BACKUP_FILES="*.{jar,json,properties,py,sh,txt} logs"
 
 # Some backup schemes offer password protection.
 # If left blank, password protection will not be used.
-# Otherwise, you will be prompted to enter a password durings
+# Otherwise, you will be prompted to enter a password during setup
 BACKUP_PASSWORD=
 
 # BASHRC SETTINGS
