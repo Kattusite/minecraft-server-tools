@@ -36,6 +36,30 @@ function assert_running() {
 	fi
 }
 
+function add_to_bashrc() {
+	# If the command already exists in bashrc, don't add it again.
+	local CMD=$1
+	if [ `grep -c "$CMD" "$BASHRC"` -eq 0 ]; then
+		echo "Adding to $BASHRC: '$CMD'"
+		echo "$CMD" >> $BASHRC
+		BASHRC_MODIFIED=1
+	fi
+}
+
+function init_bashrc() {
+	if [ -n "$ALIAS_TMUX_IN_BASHRC" ]; then
+		add_to_bashrc "alias tmux=\"tmux -S $TMUX_SOCKET\""
+	fi
+
+	if [ -n "$ALIAS_SCRIPT_IN_BASHRC" ]; then
+		add_to_bashrc "alias ${ALIAS_SCRIPT_IN_BASHRC}=\"$PWD/server.sh\""
+	fi
+
+	if [ $BASHRC_MODIFIED -eq 1 ]; then
+		echo "Run \'source $BASHRC\' for changes to take effect."
+	fi
+}
+
 function init_services() {
 	# The default services assume a server dir of /var/minecraft.
 	# Update it.
@@ -66,6 +90,7 @@ function server_init() {
 		fi
 	fi
 
+	init_bashrc
 	init_services
 	init_backups
 }

@@ -42,3 +42,8 @@ CONFIG_BACKUP_FILES="*.{jar,json,properties,py,sh,txt} logs"
 # If left blank, password protection will not be used.
 # Otherwise, you will be prompted to enter a password durings
 BACKUP_PASSWORD=
+
+# BASHRC SETTINGS
+BASHRC=$HOME/.bashrc
+ALIAS_TMUX_IN_BASHRC="yes"  # If non-empty, alias `tmux` -> `tmux -S $TMUX_SOCKET`
+ALIAS_SCRIPT_IN_BASHRC="mc" # If non-empty, add as an alias for ./server.sh
