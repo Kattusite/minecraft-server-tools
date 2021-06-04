@@ -50,12 +50,17 @@ BACKUP_DIR="backups"                # Where backups will be stored
 WORLD_BACKUP_NAME="$WORLD_NAME"     # Prepended to names of world backups
 CONFIG_BACKUP_NAME="_config"        # Prepended to names of config backups.
 
-# Which config files should be backed up?
-CONFIG_BACKUP_FILES="*.{jar,json,properties,py,sh,txt} logs"
+# Which config files / worlds should be backed up?
+CONFIG_TO_BACKUP="*.{jar,json,properties,py,sh,txt,yml} logs"
+# NOTE: borg-backup.sh assumes this will be ordered: "<OVERWORLD> <NETHER> <END>"
+WORLDS_TO_BACKUP="$WORLD_NAME ${WORLD_NAME}_nether ${WORLD_NAME}_the_end"
 
 # Some backup schemes offer password protection.
 # If left blank, password protection will not be used.
 # Otherwise, you will be prompted to enter a password during setup
+# Remember it, or you won't be able to access your data!
+# Automatic backups don't yet support passwords, so only use this if all your
+# backups will be taken manually.
 BACKUP_PASSWORD=
 
 # BASHRC SETTINGS

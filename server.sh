@@ -249,7 +249,7 @@ function server_backup() {
 
 function server_restore() {
 	assert_not_running
-	restore_backup $1
+	restore_backup $@
 }
 
 #cd $(dirname $0)
@@ -271,7 +271,7 @@ case $1 in
 		server_backup
 		;;
 	"restore")
-		server_restore $2
+		server_restore ${@:2}
 		;;
 	"status")
 		server_status
@@ -280,7 +280,7 @@ case $1 in
 		server_backup "true"
 		;;
 	"ls")
-		ls_backups $2
+		ls_backups ${@:2}
 		;;
 	*)
 		echo "Usage: $0 start|stop|attach|status|backup|fbackup|ls"

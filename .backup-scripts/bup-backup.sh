@@ -10,6 +10,9 @@
 #
 # WARNING: bup backups are still _highly_ experimental.
 #          This script hasn't been run yet, let alone tested.
+#          This script does not support $WORLDS_TO_BACKUP or
+#          $CONFIG_TO_BACKUP _at all_.
+#          If you intend to use `bup` I recommend rewriting this entire file yourself.
 
 CUR_YEAR=`date +"%Y"`
 CUR_BACKUP_DIR="$BACKUP_DIR/$CUR_YEAR"

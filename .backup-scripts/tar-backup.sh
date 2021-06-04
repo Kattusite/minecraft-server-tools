@@ -2,8 +2,8 @@
 #
 #   tar-backup.sh
 #
-# This backup backend archives the entire world directory using tar,
-# writing them into a backup directory named by their date.
+# This backup backend archives all requested world_directories and configs
+# using tar, writing them into a backup directory named by their date.
 #
 # This is a very simple, portable backup strategy,
 # but unfortunately not the most efficient since each backup will
@@ -21,7 +21,7 @@ function create_backup() {
 
   local DATESTR=`date +%Y-%m-%d-%H%M%S`
   local ARCHNAME="${CUR_BACKUP_DIR}/${WORLD_BACKUP_NAME}_${DATESTR}.tar.gz"
-  tar -czf "$ARCHNAME" "./$WORLD_NAME"
+  tar -czf "$ARCHNAME" $WORLDS_TO_BACKUP $CONFIG_TO_BACKUP
 
   if [ ! $? -eq 0 ]; then
     echo "TAR failed. No Backup created."
