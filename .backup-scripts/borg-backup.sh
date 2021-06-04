@@ -114,24 +114,24 @@ function ls_backups() {
   LS_WORLD=""
   case $1 in
     ""|"overworld"|"$WORLD_NAME")
-  		_overworld $WORLDS_TO_BACKUP
-  		;;
-  	"nether")
-  		_nether $WORLDS_TO_BACKUP
-  		;;
-  	"end")
-  		_end $WORLDS_TO_BACKUP
-  		;;
-  	"config")
-  		LS_WORLD=$CONFIG_BACKUP_NAME
-  		;;
+      _overworld $WORLDS_TO_BACKUP
+      ;;
+    "nether")
+      _nether $WORLDS_TO_BACKUP
+      ;;
+    "end")
+      _end $WORLDS_TO_BACKUP
+      ;;
+    "config")
+      LS_WORLD=$CONFIG_BACKUP_NAME
+      ;;
     "all")
       LS_WORLD="$WORLDS_TO_BACKUP $CONFIG_BACKUP_NAME"
       ;;
-  	*)
-  		echo "Usage: $0 ls [overworld|$WORLD_NAME|nether|end|config|all]"
+    *)
+      echo "Usage: $0 ls [overworld|$WORLD_NAME|nether|end|config|all]"
       return
-  		;;
+      ;;
   esac
 
   for world in $LS_WORLD; do

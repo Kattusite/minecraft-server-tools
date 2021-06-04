@@ -22,19 +22,19 @@ function init_backups() {
 }
 
 function create_backup() {
-	if [ ! -d "$CUR_BACKUP_DIR" ]; then
-	   mkdir -p "$CUR_BACKUP_DIR"
-	fi
+  if [ ! -d "$CUR_BACKUP_DIR" ]; then
+     mkdir -p "$CUR_BACKUP_DIR"
+  fi
 
-	bup -d "$CUR_BACKUP_DIR" index "$WORLD_NAME"
-	if [ $? -eq 1 ]; then
-  	bup -d "$CUR_BACKUP_DIR" init
-  	bup -d "$CUR_BACKUP_DIR" index "$WORLD_NAME"
-	fi
+  bup -d "$CUR_BACKUP_DIR" index "$WORLD_NAME"
+  if [ $? -eq 1 ]; then
+    bup -d "$CUR_BACKUP_DIR" init
+    bup -d "$CUR_BACKUP_DIR" index "$WORLD_NAME"
+  fi
 
-	bup -d "$CUR_BACKUP_DIR" save -n "$WORLD_BACKUP_NAME" "$WORLD_NAME"
+  bup -d "$CUR_BACKUP_DIR" save -n "$WORLD_BACKUP_NAME" "$WORLD_NAME"
 
-	echo "Backup using bup to $CUR_BACKUP_DIR is complete"
+  echo "Backup using bup to $CUR_BACKUP_DIR is complete"
 }
 
 function pre_backup_hook() {
