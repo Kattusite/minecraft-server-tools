@@ -14,6 +14,9 @@ MC_VERSION='1.16.5'
 JAR_URL="https://papermc.io/api/v1/paper/$MC_VERSION/latest/download"
 JAR="paper-$MC_VERSION.jar"
 
+# SERVER SETTINGS
+STOP_WARNING_TIME=5        # How many seconds to wait after `mc stop`
+
 # JAVA SETTINGS
 JAVA_PKG="openjdk-16-jdk-headless"
 JRE_JAVA="java"

@@ -23,8 +23,8 @@ function send_cmd () {
 
 function assert_not_running() {
 	if server_running; then
-		echo "It seems a server is already running. If this is not the case,\
-			manually attach to the running tmux session and close it."
+		echo "It seems a server is already running."
+		echo "If this is not the case, manually attach to the running tmux session and close it."
 		exit 1
 	fi
 }
@@ -42,7 +42,7 @@ function add_to_bashrc() {
 	if [ `grep -c "$CMD" "$BASHRC"` -eq 0 ]; then
 		echo "Adding to $BASHRC: '$CMD'"
 		echo "$CMD" >> $BASHRC
-		BASHRC_MODIFIED=1
+		BASHRC_MODIFIED=yes
 	fi
 }
 
@@ -55,7 +55,7 @@ function init_bashrc() {
 		add_to_bashrc "alias ${ALIAS_SCRIPT_IN_BASHRC}=\"$PWD/server.sh\""
 	fi
 
-	if [ $BASHRC_MODIFIED -eq 1 ]; then
+	if [ -n "$BASHRC_MODIFIED" ]; then
 		echo "Run \'source $BASHRC\' for changes to take effect."
 	fi
 }
@@ -68,8 +68,9 @@ function init_services() {
 	done
 
 	# Symlink services into appropriate system dirs
+	# Remove existing files if they exist
 	for svc in `ls $SERVICES_DIR`; do
-		sudo ln -s $SERVICES_DIR/$svc /etc/systemd/system/$svc
+		sudo ln -sf $SERVICES_DIR/$svc /etc/systemd/system/$svc
 	done
 
 	# Enable auto-start for the various services
@@ -90,9 +91,9 @@ function server_init() {
 		fi
 	fi
 
-	init_bashrc
-	init_services
 	init_backups
+	init_services
+	init_bashrc
 }
 
 function server_start() {
@@ -117,6 +118,11 @@ function server_stop() {
 	#trap "exit 0" EXIT
 
 	assert_running
+
+	echo "Stopping the server in $STOP_WARNING_TIME seconds!"
+	send_cmd "say Stopping the server in $STOP_WARNING_TIME seconds!"
+	sleep $STOP_WARNING_TIME
+	echo "Stopping the server now!"
 	send_cmd "stop"
 
 	local RET=1
