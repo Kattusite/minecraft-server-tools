@@ -7,6 +7,7 @@ Description=Minecraft Server
 Type=forking
 User=minecraft
 Group=minecraft
+WorkingDirectory=/var/minecraft
 PIDFile=/var/minecraft/server-tmux.pid
 Restart=on-failure
 RestartSec=30s

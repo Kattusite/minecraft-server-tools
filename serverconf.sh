@@ -5,6 +5,8 @@
 # SCRIPT SETTINGS
 BACKUP_SCRIPTS_DIR=$PWD/.backup-scripts    # Path to dir containing backup scripts
 SERVICES_DIR=$PWD/.services                # Path to dir containing service files
+SERVICE_USER=`whoami`                      # What user should the service run as?
+SERVICE_GROUP=$SERVICE_USER                # What group should the service run as?
 
 # JAR auto-download settings
 MC_VERSION='1.16.5'
@@ -35,7 +37,7 @@ if [ "$USE_AIKARS_FLAGS" = "yes" ]; then
 fi
 
 # SERVER FILES
-SERVER_DIR=$PWD             # Path to the server directory
+#SERVER_DIR=$PWD            # Path to server directory. NOTE: lives in server.sh
 WORLD_NAME="world"          # Name of the active world directory ("level-name")
 LOGFILE="logs/latest.log"   # Where is the latest.log file located?
 

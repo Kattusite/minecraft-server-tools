@@ -1,8 +1,11 @@
 #!/bin/bash
 
-if [ -e "serverconf.sh" ]
+# We haven't read config yet, so this one piece of config must live here.
+SERVER_DIR=$PWD
+
+if [ -e "$SERVER_DIR/serverconf.sh" ]
 then
-  source "serverconf.sh"
+  source "$SERVER_DIR/serverconf.sh"
 else
   echo No configuration found in PWD. Exiting.
   exit 1
@@ -61,10 +64,13 @@ function init_bashrc() {
 }
 
 function init_services() {
-  # The default services assume a server dir of /var/minecraft.
-  # Update it.
+  # The default services assume a server dir of /var/minecraft,
+  # and a user/group both equal to "minecraft".
+  # Overwrite these defaults with values pulled from the config.
   for svc in `ls $SERVICES_DIR/*.service`; do
     sed -i "s|/var/minecraft|$SERVER_DIR|" "$svc"
+    sed -i 's|User=.*|'"User=$SERVICE_USER"'|' "$svc"
+    sed -i 's|Group=.*|'"Group=$SERVICE_GROUP"'|' "$svc"
   done
 
   # Symlink services into appropriate system dirs

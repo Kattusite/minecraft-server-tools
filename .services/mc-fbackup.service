@@ -5,6 +5,7 @@ Description=Force backup of Minecraft Server
 Type=simple
 User=minecraft
 Group=minecraft
+WorkingDirectory=/var/minecraft
 ExecStart=/var/minecraft/server.sh fbackup
 Restart=on-failure
 RestartSec=10s
